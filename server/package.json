@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server file for CA assignment for Distributed Systems",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BarrettDamien/DSCA.git"
+  },
+  "author": "Damien Barrett",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BarrettDamien/DSCA/issues"
+  },
+  "homepage": "https://github.com/BarrettDamien/DSCA#readme",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.10.6",
+    "@grpc/proto-loader": "^0.7.12"
+  }
+}
