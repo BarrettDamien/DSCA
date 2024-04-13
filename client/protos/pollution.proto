@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package DSCA;
+
+//Define Air Pollution Service
+service AirPollutionService {
+  rpc StreamAirPollutionData (stream AirPollutionData) returns (stream PublishResponse);
+  rpc GetHistoricalAirPollutionData (GetHistoricalDataRequest) returns (stream AirPollutionDataList);
+  rpc ConfigureSensorSettings (SensorSettings) returns (ConfigureResponse);
+}
+
+message AirPollutionData {
+  string location = 1;
+  float pollution_level = 2;
+}
+
+message GetHistoricalDataRequest {
+  string location = 1;
+  int32 start_timestamp = 2;
+  int32 end_timestamp = 3;
+}
+
+message AirPollutionDataList {
+  repeated AirPollutionData data = 1;
+}
+
+//Define Water Pollution service
+service WaterPollutionService {
+  rpc StreamWaterPollutionData (stream WaterPollutionData) returns (stream PublishResponse);
+  rpc GetHistoricalWaterPollutionData (GetHistoricalDataRequest) returns (stream WaterPollutionDataList);
+  rpc ConfigureSensorSettings (SensorSettings) returns (ConfigureResponse);
+}
+
+message WaterPollutionData {
+  string location = 1;
+  float pollution_level = 2;
+}
+
+message GetHistoricalDataRequest {
+  string location = 1;
+  int32 start_timestamp = 2;
+  int32 end_timestamp = 3;
+}
+
+message WaterPollutionDataList {
+  repeated WaterPollutionData data = 1;
+}
+
+//Define Weather Station service
+service WeatherStationService {
+  rpc PublishWeatherData (stream WeatherData) returns (PublishResponse);
+  rpc GetHistoricalWeatherData (GetHistoricalDataRequest) returns (stream WeatherDataList);
+  rpc ConfigureStationSettings (SensorSettings) returns (ConfigureResponse);
+}
+
+message WeatherData {
+  string location = 1;
+  float temperature = 2;
+  float humidity = 3;
+}
+
+message GetHistoricalDataRequest {
+  string location = 1;
+  int32 start_timestamp = 2;
+  int32 end_timestamp = 3;
+}
+
+message WeatherDataList {
+  repeated WeatherData data = 1;
+}
+
+//Shared Responses
+message PublishResponse {
+  bool success = 1;
+}
+
+message SensorSettings {
+  string location = 1;
+  int32 last_inspection = 2;
+}
+
+message ConfigureResponse {
+  bool success = 1;
+}
