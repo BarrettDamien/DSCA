@@ -12,7 +12,25 @@ var pollution_proto = grpc.loadPackageDefinition(packageDefinition).DSCA
 
 //Air Pollution Functions
 function StreamAirPollutionData(call, callback){
-
+  try {
+  var location = parse(call.request.location)
+  var pollution_level = parseFloat(call.request.pollution_level)
+  if(isNaN(location) && !isNaN(pollution_level)){
+    var success = "Data Received and Logged"
+    callback(null, {
+      message: undefined,
+      success: success
+    })
+  } else{
+    callback(null, {
+      message: "Please enter a valid location and pollution level"
+    })
+  }
+} catch(e) {
+    callback(null, {
+      message: "An error occured"
+    })
+  }
 }
 
 function GetHistoricalAirPollutionData(call, callback){
