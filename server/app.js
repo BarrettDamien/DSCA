@@ -9,24 +9,29 @@ var packageDefinition = protoLoader.loadSync(PROTO_PATH)
 var pollution_proto = grpc.loadPackageDefinition(packageDefinition).DSCA
 //var water_pollution_proto = grpc.loadPackageDefinition(packageDefinitionWater)
 //var weather_station_proto = grpc.loadPackageDefinition(packageDefinitionWeather)
+var today = new Date().toISOString().slice(0,10)
+//var inspection_Date = new Date(today)
+//inspection_Date.setDate(today.getDate()-45)
+
+var randomSuccess = () => Math.random() >= 0.5
 
 //Air Pollution Functions
 function StreamAirPollutionData(call, callback){
   try {
-  var location = parse(call.request.location)
-  var pollution_level = parseFloat(call.request.pollution_level)
-  if(isNaN(location) && !isNaN(pollution_level)){
-    var success = "Data Received and Logged"
-    callback(null, {
-      message: undefined,
-      success: success
-    })
-  } else{
-    callback(null, {
-      message: "Please enter a valid location and pollution level"
-    })
-  }
-} catch(e) {
+    var location = parse(call.request.location)
+    var pollution_level = parseFloat(call.request.pollution_level)
+    if(isNaN(location) && !isNaN(pollution_level)){
+      var success = "Data Received and Logged"
+      callback(null, {
+        message: undefined,
+        success: success
+      })
+    } else{
+      callback(null, {
+        message: "Please enter a valid location and pollution level"
+      })
+    }
+  } catch(e) {
     callback(null, {
       message: "An error occured"
     })
@@ -38,7 +43,36 @@ function GetHistoricalAirPollutionData(call, callback){
 }
 
 function ConfigureAirSensorSettings(call, callback){
-
+  try {
+    var location = parse(call.request.location)
+    if(isNaN(location) && randomSuccess == true){
+      var result = "Sensor Online"
+      var inspection_Date = new Date(today)
+      inspection_Date.setDate(today.getDate()-15)
+      callback(null, {
+        message: undefined,
+        success: result,
+        last_inspection: inspection_Date.toISOString().slice(0,10)
+      })
+    } else if(isNaN(location) && randomSuccess == false){
+      var result = "Sensor Offline"
+      var inspection_Date = new Date(today)
+      inspection_Date.setDate(today.getDate()-45)
+      callback(null, {
+        message: undefined,
+        success: result,
+        last_inspection: inspection_Date.toISOString().slice(0,10)
+      })
+    } else {
+      callback(null, {
+        message: "Please enter a valid location"
+      })
+    }
+  } catch(e) {
+    callback(null, {
+      message: "An error occured"
+    })
+  }
 }
 
 //Water Pollution Functions

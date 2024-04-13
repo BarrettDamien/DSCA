@@ -76,9 +76,9 @@ message PublishResponse {
 
 message SensorSettings {
   string location = 1;
-  int32 last_inspection = 2;
 }
 
 message ConfigureResponse {
-  bool success = 1;
+  bool result = 1;
+  int32 last_inspection = 2;
 }
