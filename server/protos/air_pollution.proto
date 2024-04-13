@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 service AirPollutionService {
-  rpc StreamAirPollutionData (stream AirPollutionData) returns (PublishResponse);
-  rpc GetHistoricalAirPollutionData (GetHistoricalDataRequest) returns (AirPollutionDataList);
+  rpc StreamAirPollutionData (stream AirPollutionData) returns (stream PublishResponse);
+  rpc GetHistoricalAirPollutionData (GetHistoricalDataRequest) returns (stream AirPollutionDataList);
   rpc ConfigureSensorSettings (SensorSettings) returns (ConfigureResponse);
 }
 

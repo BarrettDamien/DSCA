@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 service WaterPollutionService {
-  rpc StreamWaterPollutionDataUpdates (stream WaterPollutionData) returns (stream PublishResponse);
+  rpc StreamWaterPollutionData (stream WaterPollutionData) returns (stream PublishResponse);
   rpc GetHistoricalWaterPollutionData (GetHistoricalDataRequest) returns (stream WaterPollutionDataList);
   rpc ConfigureSensorSettings (SensorSettings) returns (ConfigureResponse);
 }

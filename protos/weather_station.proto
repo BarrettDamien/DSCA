@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 service WeatherStationService {
-  rpc PublishWeatherData (WeatherData) returns (PublishResponse);
-  rpc GetHistoricalWeatherData (GetHistoricalDataRequest) returns (WeatherDataList);
+  rpc PublishWeatherData (stream WeatherData) returns (PublishResponse);
+  rpc GetHistoricalWeatherData (GetHistoricalDataRequest) returns (stream WeatherDataList);
   rpc ConfigureStationSettings (StationSettings) returns (ConfigureResponse);
 }
 
