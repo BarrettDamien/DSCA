@@ -4,7 +4,7 @@
   "description": "Server file for CA for Distributed Systems",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -15,10 +15,5 @@
   "bugs": {
     "url": "https://github.com/BarrettDamien/DSCA/issues"
   },
-  "homepage": "https://github.com/BarrettDamien/DSCA#readme",
-  "dependencies": {
-    "@grpc/grpc-js": "^1.10.6",
-    "@grpc/proto-loader": "^0.7.12",
-    "readline-sync": "^1.4.10"
-  }
+  "homepage": "https://github.com/BarrettDamien/DSCA#readme"
 }
