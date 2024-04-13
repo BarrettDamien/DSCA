@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+service AirPollutionService {
+  rpc StreamAirPollutionData (stream AirPollutionData) returns (PublishResponse);
+  rpc GetHistoricalAirPollutionData (GetHistoricalDataRequest) returns (AirPollutionDataList);
+  rpc ConfigureSensorSettings (SensorSettings) returns (ConfigureResponse);
+}
+
+message AirPollutionData {
+  string location = 1;
+  float pollution_level = 2;
+}
+
+message PublishResponse {
+  bool success = 1;
+}
+
+message GetHistoricalDataRequest {
+  string location = 1;
+  int32 start_timestamp = 2;
+  int32 end_timestamp = 3;
+}
+
+message AirPollutionDataList {
+  repeated AirPollutionData data = 1;
+}
+
+message SensorSettings {
+  string location = 1;
+  int32 last_inspection = 2;
+}
+
+message ConfigureResponse {
+  bool success = 1;
+}
