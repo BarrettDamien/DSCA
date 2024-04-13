@@ -6,7 +6,7 @@ package DSCA;
 service AirPollutionService {
   rpc StreamAirPollutionData (stream AirPollutionData) returns (stream PublishResponse);
   rpc GetHistoricalAirPollutionData (GetHistoricalDataRequest) returns (stream AirPollutionDataList);
-  rpc ConfigureSensorSettings (SensorSettings) returns (ConfigureResponse);
+  rpc ConfigureAirSensorSettings (SensorSettings) returns (ConfigureResponse);
 }
 
 message AirPollutionData {
@@ -28,7 +28,7 @@ message AirPollutionDataList {
 service WaterPollutionService {
   rpc StreamWaterPollutionData (stream WaterPollutionData) returns (stream PublishResponse);
   rpc GetHistoricalWaterPollutionData (GetHistoricalDataRequest) returns (stream WaterPollutionDataList);
-  rpc ConfigureSensorSettings (SensorSettings) returns (ConfigureResponse);
+  rpc ConfigureWaterSensorSettings (SensorSettings) returns (ConfigureResponse);
 }
 
 message WaterPollutionData {
