@@ -16,12 +16,11 @@ message AirPollutionData {
 
 message GetHistoricalAirDataRequest {
   string location = 1;
-  int32 start_timestamp = 2;
-  int32 end_timestamp = 3;
+  int32 days = 2;
 }
 
 message AirPollutionDataList {
-  repeated AirPollutionData data = 1;
+  float air_data = 1;
 }
 
 //Define Water Pollution service
@@ -38,17 +37,16 @@ message WaterPollutionData {
 
 message GetHistoricalWaterDataRequest {
   string location = 1;
-  int32 start_timestamp = 2;
-  int32 end_timestamp = 3;
+  int32 days = 2;
 }
 
 message WaterPollutionDataList {
-  repeated WaterPollutionData data = 1;
+  float water_data = 1;
 }
 
 //Define Weather Station service
 service WeatherStationService {
-  rpc PublishWeatherData (stream WeatherData) returns (PublishResponse);
+  rpc PublishWeatherData (stream WeatherData) returns (PublishAverage);
   rpc GetHistoricalWeatherData (GetHistoricalDataRequest) returns (stream WeatherDataList);
   rpc ConfigureStationSettings (SensorSettings) returns (ConfigureResponse);
 }
@@ -59,14 +57,18 @@ message WeatherData {
   float humidity = 3;
 }
 
+message PublishAverage {
+  float average_temperature = 1;
+  float average_humidity = 2;
+}
+
 message GetHistoricalDataRequest {
   string location = 1;
-  int32 start_timestamp = 2;
-  int32 end_timestamp = 3;
+  int32 days = 2;
 }
 
 message WeatherDataList {
-  repeated WeatherData data = 1;
+  float weather_data = 1;
 }
 
 //Shared Responses
@@ -79,6 +81,6 @@ message SensorSettings {
 }
 
 message ConfigureResponse {
-  bool result = 1;
-  int32 last_inspection = 2;
+  string result = 1;
+  string last_inspection = 2;
 }

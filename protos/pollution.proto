@@ -16,12 +16,11 @@ message AirPollutionData {
 
 message GetHistoricalAirDataRequest {
   string location = 1;
-  int32 start_timestamp = 2;
-  int32 end_timestamp = 3;
+  int32 days = 2;
 }
 
 message AirPollutionDataList {
-  repeated AirPollutionData data = 1;
+  float air_data = 1;
 }
 
 //Define Water Pollution service
@@ -38,12 +37,11 @@ message WaterPollutionData {
 
 message GetHistoricalWaterDataRequest {
   string location = 1;
-  int32 start_timestamp = 2;
-  int32 end_timestamp = 3;
+  int32 days = 2;
 }
 
 message WaterPollutionDataList {
-  repeated WaterPollutionData data = 1;
+  float water_data = 1;
 }
 
 //Define Weather Station service
@@ -61,12 +59,11 @@ message WeatherData {
 
 message GetHistoricalDataRequest {
   string location = 1;
-  int32 start_timestamp = 2;
-  int32 end_timestamp = 3;
+  int32 days = 2;
 }
 
 message WeatherDataList {
-  repeated WeatherData data = 1;
+  float weather_data = 1;
 }
 
 //Shared Responses
