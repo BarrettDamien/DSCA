@@ -22,63 +22,85 @@ var message = null
 
 //Air Pollution Functions
 function StreamAirPollutionData(call){
+  const timeout = setTimeout(() => {
+    call.cancel()
+  }, 5000)
   call.on('data', function(data){
-    const {location, pollution_level} = data
-    if(!(pollution_level.location in sensor_location)){
-      sensor_location[pollution_level.location] = {
-        location: pollution_level.location,
-        call: call
+    clearTimeout(timeout)
+    try{
+      const {location, pollution_level} = data
+      if(!(pollution_level.location in sensor_location)){
+        sensor_location[pollution_level.location] = {
+          location: pollution_level.location,
+          call: call
+        }
       }
-    }
-    if(!(pollution_level.location in sensor_location)){
-      sensor_location[pollution_level.location] = 0
-    }
-    sensor_location[pollution_level.location] += 1
-    if(pollution_level.pollution_level > highest_pollution || !message){
-      highest_pollution = pollution_level.pollution_level
-      message = "Highest recorded pollution level is in " + pollution_level.location
-    }
-    for(var sensor in sensor_location){
-      sensor_location[sensor].call.write({
-        pollution_level: pollution_level.pollution_level,
-        location: pollution_level.location,
-        message: message
+      if(!(pollution_level.location in sensor_location)){
+        sensor_location[pollution_level.location] = 0
+      }
+      sensor_location[pollution_level.location] += 1
+      if(pollution_level.pollution_level > highest_pollution || !message){
+        highest_pollution = pollution_level.pollution_level
+        message = "Highest recorded pollution level is in " + pollution_level.location
+      }
+      for(var sensor in sensor_location){
+        sensor_location[sensor].call.write({
+          pollution_level: pollution_level.pollution_level,
+          location: pollution_level.location,
+          message: message
+        })
+      }
+    } catch (error) {
+      console.error('Error processing air pollution data:', error.message)
+      call.emit('error', {
+        code: grpc.status.UNKNOWN,
+        message: 'An error occurred while processing air pollution data.'
       })
     }
   })
   call.on('end', function(){
+    clearTimeout(timeout)
     call.end()
   })
-  call.on('error', function(e){
-    console.log(e)
+  call.on('error', function(error){
+    clearTimeout(timeout)
+    console.error('Error in air pollution data stream:', error.message)
   })
 }
 
 function GetHistoricalAirPollutionData(call){
   try {
-    // var location = call.request.location
-    // var days = parseInt(call.request.days)
-    const {location, days} = call.request
-    for(var i = 0; i < days; i++){
-      var air_data = Math.round(Math.random() * 25) + 5;
-      call.write({
-        air_data: air_data
-      })
-    }
-    call.end()
+        const { location, days } = call.request
+        for (var i = 0; i < days; i++) {
+            var air_data = Math.round(Math.random() * 25) + 5;
+            call.write({
+                air_data: air_data
+            })
+        }
+        call.end()
 
-  } catch(e) {
-    callback(null, {
-      message: "An error occured"
-    })
-  }
+    } catch (error) {
+        console.error('Error retrieving historical air pollution data:', error.message);
+        call.emit('error', {
+            code: grpc.status.UNKNOWN,
+            message: 'An error occurred while retrieving historical air pollution data.'
+        });
+    }
 }
 
-function ConfigureAirSensorSettings(call, callback){
-    const {location} = call.request
-    const last_inspection = "09/04/2024"
-    const result = randomSuccess() ? "Sensor Online" : "Sensor Offline"
-    callback(null, {result, last_inspection})
+function ConfigureAirSensorSettings(call, callback) {
+    try {
+        const {location} = call.request
+        const last_inspection = "09/04/2024"
+        const result = randomSuccess() ? "Sensor Online" : "Sensor Offline"
+        callback(null, {result, last_inspection})
+    } catch (error) {
+        console.error('Error configuring air sensor settings:', error.message);
+        callback({
+            code: grpc.status.UNKNOWN,
+            message: 'An error occurred while configuring air sensor settings.'
+        });
+    }
   //   if(randomSuccess()){
   //     var result = "Sensor Online"
   //     // var inspection_Date = new Date(today);
@@ -99,61 +121,84 @@ function ConfigureAirSensorSettings(call, callback){
 
 //Water Pollution Functions
 function StreamWaterPollutionData(call){
+  const timeout = setTimeout(() => {
+    call.cancel()
+  }, 5000)
   call.on('data', function(data){
-    const {location, pollution_level} = data
-    if(!(pollution_level.location in sensor_location)){
-      sensor_location[pollution_level.location] = {
-        location: pollution_level.location,
-        call: call
+    clearTimeout(timeout)
+    try{
+      const {location, pollution_level} = data
+      if(!(pollution_level.location in sensor_location)){
+        sensor_location[pollution_level.location] = {
+          location: pollution_level.location,
+          call: call
+        }
       }
-    }
-    if(!(pollution_level.location in sensor_location)){
-      sensor_location[pollution_level.location] = 0
-    }
-    sensor_location[pollution_level.location] += 1
-    if(pollution_level.pollution_level > highest_pollution || !message){
-      highest_pollution = pollution_level.pollution_level
-      message = "Highest recorded pollution level is in " + pollution_level.location
-    }
-    for(var sensor in sensor_location){
-      sensor_location[sensor].call.write({
-        pollution_level: pollution_level.pollution_level,
-        location: pollution_level.location,
-        message: message
+      if(!(pollution_level.location in sensor_location)){
+        sensor_location[pollution_level.location] = 0
+      }
+      sensor_location[pollution_level.location] += 1
+      if(pollution_level.pollution_level > highest_pollution || !message){
+        highest_pollution = pollution_level.pollution_level
+        message = "Highest recorded pollution level is in " + pollution_level.location
+      }
+      for(var sensor in sensor_location){
+        sensor_location[sensor].call.write({
+          pollution_level: pollution_level.pollution_level,
+          location: pollution_level.location,
+          message: message
+        })
+      }
+    } catch (error) {
+      console.error('Error processing water pollution data:', error.message)
+      call.emit('error', {
+        code: grpc.status.UNKNOWN,
+        message: 'An error occurred while processing water pollution data.'
       })
     }
   })
   call.on('end', function(){
+    clearTimeout(timeout)
     call.end()
   })
-  call.on('error', function(e){
-    console.log(e)
+  call.on('error', function(error){
+    clearTimeout(timeout)
+    console.error('Error in water pollution data stream:', error.message)
   })
 }
 
 function GetHistoricalWaterPollutionData(call, callback){
   try {
-    const {location, days} = call.request
-    for(var i = 0; i < days; i++){
-      var water_data = Math.round(Math.random() * 25) + 5;
-      call.write({
-        water_data: water_data
-      })
+        const { location, days } = call.request
+        for (var i = 0; i < days; i++) {
+            var water_data = Math.round(Math.random() * 25) + 5;
+            call.write({
+                water_data: water_data
+            })
+        }
+        call.end()
+    } catch (error) {
+        console.error('Error retrieving historical water pollution data:', error.message);
+        call.emit('error', {
+            code: grpc.status.UNKNOWN,
+            message: 'An error occurred while retrieving historical water pollution data.'
+        });
     }
-    call.end()
-
-  } catch(e) {
-    callback(null, {
-      message: "An error occured"
-    })
-  }
 }
 
 function ConfigureWaterSensorSettings(call, callback){
-  const {location} = call.request
-  const last_inspection = "09/04/2024"
-  const result = randomSuccess() ? "Sensor Online" : "Sensor Offline"
-  callback(null, {result, last_inspection})
+  try {
+      const {location} = call.request
+      const last_inspection = "09/04/2024"
+      const result = randomSuccess() ? "Sensor Online" : "Sensor Offline"
+      callback(null, {result, last_inspection})
+  } catch (error) {
+      console.error('Error configuring water sensor settings:', error.message);
+      callback({
+          code: grpc.status.UNKNOWN,
+          message: 'An error occurred while configuring water sensor settings.'
+      });
+  }
 }
 
 //Weather Station Functions
@@ -170,36 +215,44 @@ function PublishWeatherData(call, callback){
   call.on('end', function(){
     callback(null, {average_temperature: temp_sum/count, average_humidity: humid_sum/count})
   })
-  call.on('error', function(e){
-    console.log("An error occured")
+  call.on('error', function(error){
+    console.log("An error occured. Allergy season hit hard.")
   })
 }
 
 function GetHistoricalWeatherData(call, callback){
   try {
-    var location = call.request.location
-    var days = parseInt(call.request.days)
-
-    for(var i = 0; i < days; i++){
-      var weather_data = Math.round(Math.random() * 25) + 5;
-      call.write({
-        weather_data: weather_data
-      })
+        const {location, days} = call.request
+        for (var i = 0; i < days; i++) {
+            var weather_data = Math.round(Math.random() * 25) + 5;
+            call.write({
+                weather_data: weather_data
+            })
+        }
+        call.end()
+    } catch (error) {
+        console.error('Error retrieving historical air pollution data:', error.message);
+        call.emit('error', {
+            code: grpc.status.UNKNOWN,
+            message: 'An error occurred while retrieving historical air pollution data.'
+        });
     }
-    call.end()
 
-  } catch(e) {
-    callback(null, {
-      message: "An error occured"
-    })
-  }
 }
 
 function ConfigureStationSettings(call, callback){
-  const {location} = call.request
-  const last_inspection = "09/04/2024"
-  const result = randomSuccess() ? "Sensor Online" : "Sensor Offline"
-  callback(null, {result, last_inspection})
+  try {
+      const {location} = call.request
+      const last_inspection = "09/04/2024"
+      const result = randomSuccess() ? "Sensor Online" : "Sensor Offline"
+      callback(null, {result, last_inspection})
+  } catch (error) {
+      console.error('Error configuring weather station sensor settings:', error.message);
+      callback({
+          code: grpc.status.UNKNOWN,
+          message: 'An error occurred while configuring weather station sensor settings.'
+      });
+  }
 }
 
 //Create Air Pollution Server

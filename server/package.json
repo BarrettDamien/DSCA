@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/BarrettDamien/DSCA/issues"
   },
-  "homepage": "https://github.com/BarrettDamien/DSCA#readme"
+  "homepage": "https://github.com/BarrettDamien/DSCA#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }

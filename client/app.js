@@ -40,8 +40,8 @@ switch (choice) {
           call.on('end', function(){
 
           })
-          call.on('error', function(e){
-            console.log("An Error Occurred", e)
+          call.on('error', function(error){
+            console.log("An Error Occurred. Camera flash was off, please try again.", error)
           })
           var location = readlineSync.question("Where is this survey for? ")
           console.log("What is the pollution level? (Type q to quit)")
@@ -74,8 +74,8 @@ switch (choice) {
           call.on('end', function(){
             console.log("Server Connection Ended")
           })
-          call.on('error', function(e){
-            console.log("An Error Occurred", e)
+          call.on('error', function(error){
+            console.log("An Error Occurred. Mercury is in retrograde.", error)
           })
           break;
 
@@ -88,8 +88,8 @@ switch (choice) {
             } else{
               try {
                 console.log("Result: " + response.result + " Last Inspection Date: " + response.inspection_Date)
-              } catch (e) {
-                console.log("Could not connect to server", e)
+              } catch (error) {
+                console.log("Could not connect to server. Server gone fishing.", error)
               }
             }
           })
@@ -119,8 +119,8 @@ switch (choice) {
           call.on('end', function(){
 
           })
-          call.on('error', function(e){
-            console.log("An Error Occurred", e)
+          call.on('error', function(error){
+            console.log("An Error Occurred", error)
           })
           var location = readlineSync.question("Where is this survey for? ")
           console.log("What is the pollution level? (Type q to quit)")
@@ -153,8 +153,8 @@ switch (choice) {
           call.on('end', function(){
             console.log("Server Connection Ended")
           })
-          call.on('error', function(e){
-            console.log("An Error Occurred", e)
+          call.on('error', function(error){
+            console.log("An Error Occurred. Wonder how that happened...", error)
           })
           break;
 
@@ -170,8 +170,8 @@ switch (choice) {
                 } else{
                   console.log("Result: ", response.result, "Last Inspection Date: ", response.inspection_Date)
                 }
-              } catch (e) {
-                console.log("Could not connect to server", e)
+              } catch (error) {
+                console.log("Could not connect to server. Left keys at home.", error)
               }
             }
           })
@@ -230,8 +230,8 @@ switch (choice) {
             call.on('end', function(){
               console.log("Server Connection Ended")
             })
-            call.on('error', function(e){
-              console.log("An Error Occurred", e)
+            call.on('error', function(error){
+              console.log("An Error Occurred. That's not supposed to happen...", error)
             })
             break;
 
@@ -247,8 +247,8 @@ switch (choice) {
                   } else{
                     console.log("Result: " + response.result + " Last Inspection Date: " + response.inspection_Date)
                   }
-                } catch (e) {
-                  console.log("Could not connect to server", e)
+                } catch (error) {
+                  console.log("Could not connect to server. Must be this tall to enter.", error)
                 }
               }
             })
