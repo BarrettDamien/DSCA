@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publish Weather Data</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <h1>Publish Weather Data</h1>
+
+    <!-- Navigation links -->
+    <a href="/streamAirPollutionData">Stream Air Pollution Data</a>
+    <a href="/getHistoricalAirPollutionData">Get Historical Air Pollution Data</a>
+    <a href="/configureAirSensorSettings">Configure Air Sensor Settings</a>
+    <a href="/streamWaterPollutionData">Stream Water Pollution Data</a>
+    <a href="/getHistoricalWaterPollutionData">Get Historical Water Pollution Data</a>
+    <a href="/configureWaterSensorSettings">Configure Water Sensor Settings</a>
+    <a href="/publishWeatherData">Publish Weather Data</a>
+    <a href="/getHistoricalWeatherData">Get Historical Weather Data</a>
+    <a href="/configureStationSettings">Configure Weather Station Settings</a>
+
+    <!-- Error message display -->
+    <% if(error) { %>
+      <p><%= error %></p>
+    <% } %>
+
+    <!-- Form for submitting data -->
+    <form action="/publishWeatherData" method="post">
+        <label for="temperature">Temperature:</label>
+        <input type="number" name="temperature" required>
+        <br>
+        <label for="humidity">Humidity:</label>
+        <input type="number" name="humidity" required>
+        <br>
+        <button type="submit">Publish Weather Data</button>
+    </form>
+
+    <!-- Display area for response message -->
+    <div id="response-message">
+        <!-- Response message from the server will be displayed here -->
+    </div>
+
+</body>
+</html>

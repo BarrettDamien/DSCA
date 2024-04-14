@@ -1,11 +1,30 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
+    <!-- Add your CSS stylesheet link here -->
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+    <!-- Navigation links -->
+    <a href="/streamAirPollutionData">Stream Air Pollution Data</a>
+    <a href="/getHistoricalAirPollutionData">Get Historical Air Pollution Data</a>
+    <a href="/configureAirSensorSettings">Configure Air Sensor Settings</a>
+    <a href="/streamWaterPollutionData">Stream Water Pollution Data</a>
+    <a href="/getHistoricalWaterPollutionData">Get Historical Water Pollution Data</a>
+    <a href="/configureWaterSensorSettings">Configure Water Sensor Settings</a>
+    <a href="/publishWeatherData">Publish Weather Data</a>
+    <a href="/getHistoricalWeatherData">Get Historical Weather Data</a>
+    <a href="/configureStationSettings">Configure Weather Station Settings</a>
+
+    <!-- Error message display -->
+    <% if(error) { %>
+      <p><%= error %></p>
+    <% } %>
+
+</body>
 </html>

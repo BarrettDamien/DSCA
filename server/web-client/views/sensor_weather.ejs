@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configure Weather  Station</title>
+    <!-- Add your CSS stylesheet link here -->
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <h1>Configure Weather  Station</h1>
+
+    <!-- Navigation links -->
+    <a href="/streamAirPollutionData">Stream Air Pollution Data</a>
+    <a href="/getHistoricalAirPollutionData">Get Historical Air Pollution Data</a>
+    <a href="/configureAirSensorSettings">Configure Air Sensor Settings</a>
+    <a href="/streamWaterPollutionData">Stream Water Pollution Data</a>
+    <a href="/getHistoricalWaterPollutionData">Get Historical Water Pollution Data</a>
+    <a href="/configureWaterSensorSettings">Configure Water Sensor Settings</a>
+    <a href="/publishWeatherData">Publish Weather Data</a>
+    <a href="/getHistoricalWeatherData">Get Historical Weather Data</a>
+    <a href="/configureStationSettings">Configure Weather Station Settings</a>
+
+    <!-- Error message display -->
+    <% if(error) { %>
+      <p><%= error %></p>
+    <% } %>
+
+    <!-- Form for submitting data -->
+    <form action="/streamAirPollutionData" method="post">
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+        <label for="pollutionLevel">Pollution Level:</label>
+        <input type="number" id="pollutionLevel" name="pollutionLevel" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Display result if available -->
+    <% if(result) { %>
+      <p>Result: <%= result %></p>
+    <% } %>
+
+    <!-- Add any additional HTML elements or JavaScript code as needed -->
+
+</body>
+</html>
