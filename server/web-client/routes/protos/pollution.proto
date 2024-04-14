@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package DSCA;
+
+//Define Air Pollution Service
+service AirPollutionService {
+  rpc StreamAirPollutionData (stream AirPollutionData) returns (stream PublishResponse);
+  rpc GetHistoricalAirPollutionData (GetHistoricalAirDataRequest) returns (stream AirPollutionDataList);
+  rpc ConfigureAirSensorSettings (SensorSettings) returns (ConfigureResponse);
+}
+
+message AirPollutionData {
+  string location = 1;
+  float pollution_level = 2;
+}
+
+message GetHistoricalAirDataRequest {
+  string location = 1;
+  int32 days = 2;
+}
+
+message AirPollutionDataList {
+  float air_data = 1;
+}
+
+//Define Water Pollution service
+service WaterPollutionService {
+  rpc StreamWaterPollutionData (stream WaterPollutionData) returns (stream PublishResponse);
+  rpc GetHistoricalWaterPollutionData (GetHistoricalWaterDataRequest) returns (stream WaterPollutionDataList);
+  rpc ConfigureWaterSensorSettings (SensorSettings) returns (ConfigureResponse);
+}
+
+message WaterPollutionData {
+  string location = 1;
+  float pollution_level = 2;
+}
+
+message GetHistoricalWaterDataRequest {
+  string location = 1;
+  int32 days = 2;
+}
+
+message WaterPollutionDataList {
+  float water_data = 1;
+}
+
+//Define Weather Station service
+service WeatherStationService {
+  rpc PublishWeatherData (stream WeatherData) returns (PublishAverage);
+  rpc GetHistoricalWeatherData (GetHistoricalDataRequest) returns (stream WeatherDataList);
+  rpc ConfigureStationSettings (SensorSettings) returns (ConfigureResponse);
+}
+
+message WeatherData {
+  string location = 1;
+  float temperature = 2;
+  float humidity = 3;
+}
+
+message PublishAverage {
+  float average_temperature = 1;
+  float average_humidity = 2;
+}
+
+message GetHistoricalDataRequest {
+  string location = 1;
+  int32 days = 2;
+}
+
+message WeatherDataList {
+  float weather_data = 1;
+}
+
+//Shared Responses
+message PublishResponse {
+  bool success = 1;
+}
+
+message SensorSettings {
+  string location = 1;
+}
+
+message ConfigureResponse {
+  string result = 1;
+  string last_inspection = 2;
+}

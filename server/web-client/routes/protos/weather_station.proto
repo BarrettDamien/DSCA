@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package DSCA;
+
+service WeatherStationService {
+  rpc PublishWeatherData (stream WeatherData) returns (PublishAverage);
+  rpc GetHistoricalWeatherData (GetHistoricalDataRequest) returns (stream WeatherDataList);
+  rpc ConfigureStationSettings (SensorSettings) returns (ConfigureResponse);
+}
+
+message WeatherData {
+  string location = 1;
+  float temperature = 2;
+  float humidity = 3;
+}
+
+message PublishAverage {
+  float average_temperature = 1;
+  float average_humidity = 2;
+}
+
+message GetHistoricalDataRequest {
+  string location = 1;
+  int32 days = 2;
+}
+
+message WeatherDataList {
+  float weather_data = 1;
+}
+
+message SensorSettings {
+  string location = 1;
+}
+
+message ConfigureResponse {
+  string result = 1;
+  string last_inspection = 2;
+}

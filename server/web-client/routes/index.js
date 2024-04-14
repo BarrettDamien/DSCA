@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const app = express()
 const grpc = require('@grpc/grpc-js')
 const protoLoader = require('@grpc/proto-loader')
 const AIR_PROTO_PATH = __dirname + "/protos/air_pollution.proto"
@@ -19,7 +18,7 @@ const clientWeather = new weather_station_proto.WeatherStationService("0.0.0.0:4
 // Define routes for each service
 //Route for StreamAirPollutionData
 router.post('/streamAirPollutionData', (req, res) => {
-  const { location, pollutionLevel } = req.body;
+  const {location, pollutionLevel} = req.body;
     // Bidirectional Streaming RPC StreamAirPollutionData
     const call = clientAir.StreamAirPollutionData()
     call.on('data', (response) => {
@@ -72,7 +71,7 @@ router.post('/getHistoricalAirPollutionData', (req, res) => {
 })
 //Route for ConfigureAirSensorSettings
 router.post('/configureAirSensorSettings', (req, res) => {
-  const { location } = req.body;
+  const {location} = req.body;
     //Unary RPC ConfigureAirSensorSettings
     clientAir.ConfigureAirSensorSettings({ location }, (error, response) => {
         if (error) {
@@ -91,7 +90,7 @@ router.post('/configureAirSensorSettings', (req, res) => {
 })
 //Route for StreamWaterPollutionData
 router.post('/streamWaterPollutionData', (req, res) => {
-  const { location, pollutionLevel } = req.body;
+  const {location, pollutionLevel} = req.body;
     //Bidirectional Streaming RPC StreamAirPollutionData
     const call = clientWater.streamWaterPollutionData();
     call.on('data', (response) => {
@@ -144,7 +143,7 @@ router.post('/getHistoricalWaterPollutionData', (req, res) => {
 })
 //Route for ConfigureWaterSensorSettings
 router.post('/configureWaterSensorSettings', (req, res) => {
-  const { location } = req.body
+  const {location} = req.body
     //Unary RPC ConfigureWaterSensorSettings
     clientWater.ConfigureWaterSensorSettings({ location }, (error, response) => {
         if (error) {
@@ -168,7 +167,7 @@ router.post('/configureWaterSensorSettings', (req, res) => {
 })
 //Route for PublishWeatherData
 router.post('/publishWeatherData', (req, res) => {
-  const { temperature, humidity } = req.body
+  const {temperature, humidity} = req.body
     //Client Streaming RPC PublishWeatherData
     const call = clientWeather.PublishWeatherData((error, response) => {
         if (error) {
@@ -203,7 +202,7 @@ router.post('/getHistoricalWeatherData', (req, res) => {
 })
 //Route for ConfigureStationSettings
 router.post('/configureStationSettings', (req, res) => {
-  const { location } = req.body;
+  const {location} = req.body;
     //Unary RPC ConfigureStationSettings
     clientWeather.ConfigureStationSettings({ location }, (error, response) => {
         if (error) {

@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package DSCA;
+
+service AirPollutionService {
+  rpc StreamAirPollutionData (stream AirPollutionData) returns (stream PublishResponse);
+  rpc GetHistoricalAirPollutionData (GetHistoricalAirDataRequest) returns (stream AirPollutionDataList);
+  rpc ConfigureAirSensorSettings (SensorSettings) returns (ConfigureResponse);
+}
+
+message AirPollutionData {
+  string location = 1;
+  float pollution_level = 2;
+}
+
+message PublishResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetHistoricalAirDataRequest {
+  string location = 1;
+  int32 days = 2;
+}
+
+message AirPollutionDataList {
+  float air_data = 1;
+}
+
+message SensorSettings {
+  string location = 1;
+}
+
+message ConfigureResponse {
+  string result = 1;
+  string last_inspection = 2;
+}

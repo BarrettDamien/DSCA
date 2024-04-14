@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/BarrettDamien/DSCA#readme",
   "dependencies": {
+    "@grpc/grpc-js": "^1.10.6",
     "express": "^4.19.2"
   }
 }
