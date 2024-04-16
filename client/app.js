@@ -161,6 +161,7 @@ switch (choice) {
         case 3:
           //Unary RPC ConfigureWaterSensorSettings
           clientWater.ConfigureWaterSensorSettings({location: location}, function(error, response){
+            console.log(response)
             if(error){
               console.error("Error: ", error)
             } else{
@@ -168,7 +169,7 @@ switch (choice) {
                 if(response.message){
                   console.log(response.message)
                 } else{
-                  console.log("Result: ", response.result, "Last Inspection Date: ", response.inspection_Date)
+                  console.log("Result: ", response.result, "Last Inspection Date: ", response.last_inspection)
                 }
               } catch (error) {
                 console.log("Could not connect to server. Left keys at home.", error)

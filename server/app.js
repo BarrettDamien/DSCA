@@ -191,7 +191,7 @@ function ConfigureWaterSensorSettings(call, callback){
       const {location} = call.request
       const last_inspection = "09/04/2024"
       const result = randomSuccess() ? "Sensor Online" : "Sensor Offline"
-      callback(null, {result, last_inspection})
+      callback(null, {result:result, last_inspection:last_inspection})
   } catch (error) {
       console.error('Error configuring water sensor settings:', error.message);
       callback({
