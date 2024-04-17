@@ -15,8 +15,8 @@ message WeatherData {
 }
 
 message PublishAverage {
-  float average_temperature = 1;
-  float average_humidity = 2;
+  float averageTemperature = 1;
+  float averageHumidity = 2;
 }
 
 message GetHistoricalDataRequest {
@@ -25,7 +25,7 @@ message GetHistoricalDataRequest {
 }
 
 message WeatherDataList {
-  float weather_data = 1;
+  float weatherData = 1;
 }
 
 message SensorSettings {
@@ -34,5 +34,5 @@ message SensorSettings {
 
 message ConfigureResponse {
   string result = 1;
-  string last_inspection = 2;
+  string lastInspection = 2;
 }

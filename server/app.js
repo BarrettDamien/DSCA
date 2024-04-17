@@ -28,25 +28,25 @@ function StreamAirPollutionData(call){
   call.on('data', function(data){
     clearTimeout(timeout)
     try{
-      const {location, pollution_level} = data
-      if(!(pollution_level.location in sensor_location)){
-        sensor_location[pollution_level.location] = {
-          location: pollution_level.location,
+      const {location, pollutionLevel} = data
+      if(!(pollutionLevel.location in sensor_location)){
+        sensor_location[pollutionLevel.location] = {
+          location: pollutionLevel.location,
           call: call
         }
       }
-      if(!(pollution_level.location in sensor_location)){
-        sensor_location[pollution_level.location] = 0
+      if(!(pollutionLevel.location in sensor_location)){
+        sensor_location[pollutionLevel.location] = 0
       }
-      sensor_location[pollution_level.location] += 1
-      if(pollution_level.pollution_level > highest_pollution || !message){
-        highest_pollution = pollution_level.pollution_level
-        message = "Highest recorded pollution level is in " + pollution_level.location
+      sensor_location[pollutionLevel.location] += 1
+      if(pollutionLevel.pollutionLevel > highest_pollution || !message){
+        highest_pollution = pollutionLevel.pollutionLevel
+        message = "Highest recorded pollution level is in " + pollutionLevel.location
       }
       for(var sensor in sensor_location){
         sensor_location[sensor].call.write({
-          pollution_level: pollution_level.pollution_level,
-          location: pollution_level.location,
+          pollutionLevel: pollutionLevel.pollutionLevel,
+          location: pollutionLevel.location,
           message: message
         })
       }
@@ -72,9 +72,9 @@ function GetHistoricalAirPollutionData(call){
   try {
         const { location, days } = call.request
         for (var i = 0; i < days; i++) {
-            var air_data = Math.round(Math.random() * 25) + 5;
+            var airData = Math.round(Math.random() * 25) + 5;
             call.write({
-                air_data: air_data
+                airData: airData
             })
         }
         call.end()
@@ -91,9 +91,9 @@ function GetHistoricalAirPollutionData(call){
 function ConfigureAirSensorSettings(call, callback) {
     try {
         const {location} = call.request
-        const last_inspection = "09/04/2024"
+        const lastInspection = "09/04/2024"
         const result = randomSuccess() ? "Sensor Online" : "Sensor Offline"
-        callback(null, {result, last_inspection})
+        callback(null, {result, lastInspection})
     } catch (error) {
         console.error('Error configuring air sensor settings:', error.message);
         callback({
@@ -127,25 +127,25 @@ function StreamWaterPollutionData(call){
   call.on('data', function(data){
     clearTimeout(timeout)
     try{
-      const {location, pollution_level} = data
-      if(!(pollution_level.location in sensor_location)){
-        sensor_location[pollution_level.location] = {
-          location: pollution_level.location,
+      const {location, pollutionLevel} = data
+      if(!(pollutionLevel.location in sensor_location)){
+        sensor_location[pollutionLevel.location] = {
+          location: pollutionLevel.location,
           call: call
         }
       }
-      if(!(pollution_level.location in sensor_location)){
-        sensor_location[pollution_level.location] = 0
+      if(!(pollutionLevel.location in sensor_location)){
+        sensor_location[pollutionLevel.location] = 0
       }
-      sensor_location[pollution_level.location] += 1
-      if(pollution_level.pollution_level > highest_pollution || !message){
-        highest_pollution = pollution_level.pollution_level
-        message = "Highest recorded pollution level is in " + pollution_level.location
+      sensor_location[pollutionLevel.location] += 1
+      if(pollutionLevel.pollutionLevel > highest_pollution || !message){
+        highest_pollution = pollutionLevel.pollutionLevel
+        message = "Highest recorded pollution level is in " + pollutionLevel.location
       }
       for(var sensor in sensor_location){
         sensor_location[sensor].call.write({
-          pollution_level: pollution_level.pollution_level,
-          location: pollution_level.location,
+          pollutionLevel: pollutionLevel.pollutionLevel,
+          location: pollutionLevel.location,
           message: message
         })
       }
@@ -171,9 +171,9 @@ function GetHistoricalWaterPollutionData(call, callback){
   try {
         const { location, days } = call.request
         for (var i = 0; i < days; i++) {
-            var water_data = Math.round(Math.random() * 25) + 5;
+            var waterData = Math.round(Math.random() * 25) + 5;
             call.write({
-                water_data: water_data
+                waterData: waterData
             })
         }
         call.end()
@@ -189,9 +189,9 @@ function GetHistoricalWaterPollutionData(call, callback){
 function ConfigureWaterSensorSettings(call, callback){
   try {
       const {location} = call.request
-      const last_inspection = "09/04/2024"
+      const lastInspection = "09/04/2024"
       const result = randomSuccess() ? "Sensor Online" : "Sensor Offline"
-      callback(null, {result:result, last_inspection:last_inspection})
+      callback(null, {result:result, lastInspection:lastInspection})
   } catch (error) {
       console.error('Error configuring water sensor settings:', error.message);
       callback({
@@ -213,7 +213,7 @@ function PublishWeatherData(call, callback){
     count += 1
   })
   call.on('end', function(){
-    callback(null, {average_temperature: temp_sum/count, average_humidity: humid_sum/count})
+    callback(null, {averageTemperature: temp_sum/count, averageHumidity: humid_sum/count})
   })
   call.on('error', function(error){
     console.log("An error occured. Allergy season hit hard.")
@@ -224,9 +224,9 @@ function GetHistoricalWeatherData(call, callback){
   try {
         const {location, days} = call.request
         for (var i = 0; i < days; i++) {
-            var weather_data = Math.round(Math.random() * 25) + 5;
+            var weatherData = Math.round(Math.random() * 25) + 5;
             call.write({
-                weather_data: weather_data
+                weatherData: weatherData
             })
         }
         call.end()
@@ -243,9 +243,9 @@ function GetHistoricalWeatherData(call, callback){
 function ConfigureStationSettings(call, callback){
   try {
       const {location} = call.request
-      const last_inspection = "09/04/2024"
+      const lastInspection = "09/04/2024"
       const result = randomSuccess() ? "Sensor Online" : "Sensor Offline"
-      callback(null, {result, last_inspection})
+      callback(null, {result, lastInspection})
   } catch (error) {
       console.error('Error configuring weather station sensor settings:', error.message);
       callback({

@@ -10,7 +10,7 @@ service AirPollutionService {
 
 message AirPollutionData {
   string location = 1;
-  float pollution_level = 2;
+  float pollutionLevel = 2;
 }
 
 message PublishResponse {
@@ -24,7 +24,7 @@ message GetHistoricalAirDataRequest {
 }
 
 message AirPollutionDataList {
-  float air_data = 1;
+  float airData = 1;
 }
 
 message SensorSettings {
@@ -33,5 +33,5 @@ message SensorSettings {
 
 message ConfigureResponse {
   string result = 1;
-  string last_inspection = 2;
+  string lastInspection = 2;
 }

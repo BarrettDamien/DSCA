@@ -33,9 +33,9 @@ switch (choice) {
       switch (option1) {
         case 1:
           //Bidirectional Streaming RPC StreamAirPollutionData
-          var call = clientWater.StreamAirPollutionData({location: location, pollution_level: pollution_level})
+          var call = clientWater.StreamAirPollutionData({location: location, pollutionLevel: pollutionLevel})
           call.on('data', function(response){
-            console.log(response.location + " recorded a pollution level of " + response.pollution_level + ". " + response.message)
+            console.log(response.location + " recorded a pollution level of " + response.pollutionLevel + ". " + response.message)
           })
           call.on('end', function(){
 
@@ -49,14 +49,14 @@ switch (choice) {
             input: process.stdin,
             output: process.stdout
           })
-          rl.on('line', function(pollution_level){
-            if(pollution_level.toLowerCase === "q"){
+          rl.on('line', function(pollutionLevel){
+            if(pollutionLevel.toLowerCase === "q"){
               call.end()
               rl.close()
             } else{
               call.write({
                 location: location,
-                pollution_level: parseFloat(pollution_level)
+                pollutionLevel: parseFloat(pollutionLevel)
               })
             }
           })
@@ -69,7 +69,7 @@ switch (choice) {
           var call = clientAir.GetHistoricalAirPollutionData({location: location, days: days})
 
           call.on('data', function(response) {
-            console.log("Record Data:  " + response.air_data)
+            console.log("Record Data:  " + response.airData)
           })
           call.on('end', function(){
             console.log("Server Connection Ended")
@@ -87,7 +87,7 @@ switch (choice) {
               console.error("Error: ", error)
             } else{
               try {
-                console.log("Result: " + response.result + " Last Inspection Date: " + response.inspection_Date)
+                console.log("Result: " + response.result + " Last Inspection Date: " + response.lastInspection)
               } catch (error) {
                 console.log("Could not connect to server. Server gone fishing.", error)
               }
@@ -114,7 +114,7 @@ switch (choice) {
           //Bidirectional Streaming RPC StreamWaterPollutionData
           var call = clientWater.StreamWaterPollutionData()
           call.on('data', function(response){
-            console.log(response.location + " recorded a pollution level of " + response.pollution_level + ". " + response.message)
+            console.log(response.location + " recorded a pollution level of " + response.pollutionLevel + ". " + response.message)
           })
           call.on('end', function(){
 
@@ -128,14 +128,14 @@ switch (choice) {
             input: process.stdin,
             output: process.stdout
           })
-          rl.on('line', function(pollution_level){
-            if(pollution_level.toLowerCase === "q"){
+          rl.on('line', function(pollutionLevel){
+            if(pollutionLevel.toLowerCase === "q"){
               call.end()
               rl.close()
             } else{
               call.write({
                 location: location,
-                pollution_level: parseFloat(pollution_level)
+                pollutionLevel: parseFloat(pollutionLevel)
               })
             }
           })
@@ -148,7 +148,7 @@ switch (choice) {
           var call = clientWater.GetHistoricalWaterPollutionData({location: location, days: days})
 
           call.on('data', function(response) {
-            console.log("Record Data:  " + response.water_data)
+            console.log("Record Data:  " + response.waterData)
           })
           call.on('end', function(){
             console.log("Server Connection Ended")
@@ -169,7 +169,7 @@ switch (choice) {
                 if(response.message){
                   console.log(response.message)
                 } else{
-                  console.log("Result: ", response.result, "Last Inspection Date: ", response.last_inspection)
+                  console.log("Result: ", response.result, "Last Inspection Date: ", response.lastInspection)
                 }
               } catch (error) {
                 console.log("Could not connect to server. Left keys at home.", error)
@@ -199,7 +199,7 @@ switch (choice) {
               if(error){
                 console.log("An error occured")
               } else {
-                console.log("From the input data, the average temperature is " + response.average_temperature + " and the average humidity is " + response.average_humidity)
+                console.log("From the input data, the average temperature is " + response.averageTemperature + " and the average humidity is " + response.averageHumidity)
               }
             })
 
@@ -226,7 +226,7 @@ switch (choice) {
             var call = clientAir.GetHistoricalWeatherData({location: location, days: days})
 
             call.on('data', function(response) {
-              console.log("Record Data:  " + response.weather_data)
+              console.log("Record Data:  " + response.weatherData)
             })
             call.on('end', function(){
               console.log("Server Connection Ended")
@@ -246,7 +246,7 @@ switch (choice) {
                   if(response.message){
                     console.log(response.message)
                   } else{
-                    console.log("Result: " + response.result + " Last Inspection Date: " + response.inspection_Date)
+                    console.log("Result: " + response.result + " Last Inspection Date: " + response.lastInspection)
                   }
                 } catch (error) {
                   console.log("Could not connect to server. Must be this tall to enter.", error)
