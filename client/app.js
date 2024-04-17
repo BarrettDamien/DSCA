@@ -33,7 +33,7 @@ switch (choice) {
       switch (option1) {
         case 1:
           //Bidirectional Streaming RPC StreamAirPollutionData
-          var call = clientWater.StreamAirPollutionData({location: location, pollutionLevel: pollutionLevel})
+          var call = clientWater.StreamAirPollutionData()
           call.on('data', function(response){
             console.log(response.location + " recorded a pollution level of " + response.pollutionLevel + ". " + response.message)
           })
@@ -41,7 +41,7 @@ switch (choice) {
 
           })
           call.on('error', function(error){
-            console.log("An Error Occurred. Camera flash was off, please try again.", error)
+            console.log("An Error Occurred", error)
           })
           var location = readlineSync.question("Where is this survey for? ")
           console.log("What is the pollution level? (Type q to quit)")
