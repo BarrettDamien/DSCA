@@ -33,7 +33,7 @@ switch (choice) {
       switch (option1) {
         case 1:
           //Bidirectional Streaming RPC StreamAirPollutionData
-          var call = clientWater.StreamAirPollutionData()
+          var call = clientAir.StreamAirPollutionData()
           call.on('data', function(response){
             console.log(response.location + " recorded a pollution level of " + response.pollutionLevel + ". " + response.message)
           })
