@@ -203,18 +203,18 @@ switch (choice) {
               }
             })
 
-            var temperature_input
-            var humidity_input
-            var user_input
+            var temperatureInput
+            var humidityInput
+            var userInput
 
             while(true){
-              temperature_input = readlineSync.question("Enter temperature: ")
-              humidity_input = readlineSync.question("Enter humidity: ")
-              user_input = readlineSync.question("End entries? Y/N ")
-              if(user_input.toLowerCase() === "y"){
+              temperatureInput = readlineSync.question("Enter temperature: ")
+              humidityInput = readlineSync.question("Enter humidity: ")
+              userInput = readlineSync.question("End entries? Y/N ")
+              if(userInput.toLowerCase() === "y"){
                 break
               }
-              call.write({ temperature: parseFloat(temperature_input), humidity: parseFloat(humidity_input)})
+              call.write({ temperature: parseFloat(temperatureInput), humidity: parseFloat(humidityInput)})
             }
             call.end()
             break;

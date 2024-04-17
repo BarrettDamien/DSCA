@@ -15,9 +15,9 @@ var today = new Date().toISOString().slice(0,10)
 var randomSuccess = () => Math.random() >= 0.5
 
 //Bidirection Vars
-var sensor_location = {}
-var pollution_metrics = {}
-var highest_pollution = 0
+var sensorLocation = {}
+var pollutionMetrics = {}
+var highestPollution = 0
 var message = null
 
 //Air Pollution Functions
@@ -29,22 +29,22 @@ function StreamAirPollutionData(call){
     clearTimeout(timeout)
     try{
       const {location, pollutionLevel} = data
-      if(!(pollutionLevel.location in sensor_location)){
-        sensor_location[pollutionLevel.location] = {
+      if(!(pollutionLevel.location in sensorLocation)){
+        sensorLocation[pollutionLevel.location] = {
           location: pollutionLevel.location,
           call: call
         }
       }
-      if(!(pollutionLevel.location in sensor_location)){
-        sensor_location[pollutionLevel.location] = 0
+      if(!(pollutionLevel.location in sensorLocation)){
+        sensorLocation[pollutionLevel.location] = 0
       }
-      sensor_location[pollutionLevel.location] += 1
-      if(pollutionLevel.pollutionLevel > highest_pollution || !message){
-        highest_pollution = pollutionLevel.pollutionLevel
+      sensorLocation[pollutionLevel.location] += 1
+      if(pollutionLevel.pollutionLevel > highestPollution || !message){
+        highestPollution = pollutionLevel.pollutionLevel
         message = "Highest recorded pollution level is in " + pollutionLevel.location
       }
-      for(var sensor in sensor_location){
-        sensor_location[sensor].call.write({
+      for(var sensor in sensorLocation){
+        sensorLocation[sensor].call.write({
           pollutionLevel: pollutionLevel.pollutionLevel,
           location: pollutionLevel.location,
           message: message
@@ -128,22 +128,22 @@ function StreamWaterPollutionData(call){
     clearTimeout(timeout)
     try{
       const {location, pollutionLevel} = data
-      if(!(pollutionLevel.location in sensor_location)){
-        sensor_location[pollutionLevel.location] = {
+      if(!(pollutionLevel.location in sensorLocation)){
+        sensorLocation[pollutionLevel.location] = {
           location: pollutionLevel.location,
           call: call
         }
       }
-      if(!(pollutionLevel.location in sensor_location)){
-        sensor_location[pollutionLevel.location] = 0
+      if(!(pollutionLevel.location in sensorLocation)){
+        sensorLocation[pollutionLevel.location] = 0
       }
-      sensor_location[pollutionLevel.location] += 1
-      if(pollutionLevel.pollutionLevel > highest_pollution || !message){
-        highest_pollution = pollutionLevel.pollutionLevel
+      sensorLocation[pollutionLevel.location] += 1
+      if(pollutionLevel.pollutionLevel > highestPollution || !message){
+        highestPollution = pollutionLevel.pollutionLevel
         message = "Highest recorded pollution level is in " + pollutionLevel.location
       }
-      for(var sensor in sensor_location){
-        sensor_location[sensor].call.write({
+      for(var sensor in sensorLocation){
+        sensorLocation[sensor].call.write({
           pollutionLevel: pollutionLevel.pollutionLevel,
           location: pollutionLevel.location,
           message: message
@@ -204,16 +204,16 @@ function ConfigureWaterSensorSettings(call, callback){
 //Weather Station Functions
 function PublishWeatherData(call, callback){
   var count = 0
-  var temp_sum = 0
-  var humid_sum = 0
+  var tempSum = 0
+  var humidSum = 0
 
   call.on('data', function(request){
-    temp_sum += request.temperature
-    humid_sum += request.humidity
+    tempSum += request.temperature
+    humidSum += request.humidity
     count += 1
   })
   call.on('end', function(){
-    callback(null, {averageTemperature: temp_sum/count, averageHumidity: humid_sum/count})
+    callback(null, {averageTemperature: tempSum/count, averageHumidity: humidSum/count})
   })
   call.on('error', function(error){
     console.log("An error occured. Allergy season hit hard.")
