@@ -31,7 +31,7 @@ router.post('/streamAirPollutionData', (req, res, next) => {
     // Bidirectional Streaming RPC StreamAirPollutionData
     const call = clientAir.StreamAirPollutionData()
     call.on('data', (response) => {
-        console.log(`${response.location} recorded a pollution level of ${response.pollution_level}. ${response.message}`);
+        console.log(`${response.location} recorded a pollution level of ${response.pollutionLevel}. ${response.message}`);
     });
     call.on('end', () => {
         console.log("Server Connection Ended");
@@ -54,30 +54,31 @@ router.post('/streamAirPollutionData', (req, res, next) => {
             } else {
                 call.write({
                     location: location,
-                    pollution_level: parseFloat(pollution_level)
+                    pollutionLevel: parseFloat(pollutionLevel)
                 })
             }
         })
     })
 })
 //Route for GetHistoricalAirPollutionData
-router.post('/getHistoricalAirPollutionData', (req, res, next) => {
-  const {location, days} = req.body
+router.get('/getHistoricalAirPollutionData', (req, res, next) => {
     //Server Streaming RPC GetHistoricalAirPollutionData
+    const {location, days} = req.body
     const call = clientAir.GetHistoricalAirPollutionData({location, days})
     call.on('data', (response) => {
-        console.log("Record Data:  " + response.air_data)
-        res.status(200).send(response.air_data);
+        console.log("Record Data:  " + response.airData)
+        res.status(200).render('getHistoricalAirPollutionData', {error: null, data: response.airData});
     });
-    call.on('end', () => {
-        console.log("Server Connection Ended")
-        res.status(200).send("Server Connection Ended")
-    });
+    // call.on('end', () => {
+    //     console.log("Server Connection Ended")
+    //     res.status(200).send("Server Connection Ended")
+    // });
     call.on('error', (error) => {
         console.log("An Error Occurred. Mercury is in retrograde.", error)
         res.status(500).send("An error occurred while getting historical air pollution data.")
     });
 })
+
 //Route for ConfigureAirSensorSettings
 router.post('/configureAirSensorSettings', (req, res, next) => {
   const {location} = req.body;
@@ -92,7 +93,7 @@ router.post('/configureAirSensorSettings', (req, res, next) => {
                     console.log(response.message)
                     res.status(200).send(response.message)
                 } else {
-                    console.log("Result: ", response.result, "Last Inspection Date: ", response.last_inspection)
+                    console.log("Result: ", response.result, "Last Inspection Date: ", response.lastInspection)
                     res.status(200).send(response)
                 }
             } catch (error) {
@@ -104,81 +105,16 @@ router.post('/configureAirSensorSettings', (req, res, next) => {
   })
 
 //Route for StreamWaterPollutionData
-router.post('/streamWaterPollutionData', (req, res, next) => {
-  const {location, pollutionLevel} = req.body;
-    //Bidirectional Streaming RPC StreamAirPollutionData
-    const call = clientWater.streamWaterPollutionData();
-    call.on('data', (response) => {
-        console.log(`${response.location} recorded a pollution level of ${response.pollution_level}. ${response.message}`);
-    });
-    call.on('end', () => {
-        console.log("Server Connection Ended");
-        res.status(200).send("Server Connection Ended");
-    });
-    call.on('error', (error) => {
-        console.error("An Error Occurred", error);
-        res.status(500).send("An Error Occurred");
-    });
-    //Get user input for location and pollution level
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-    rl.question("Where is this survey for? ", (location, next) => {
-        rl.question("What is the pollution level? (Type q to quit)", (pollution_level) => {
-            if (pollution_level.toLowerCase() === "q") {
-                call.end();
-                rl.close();
-            } else {
-                call.write({
-                    location: location,
-                    pollution_level: parseFloat(pollution_level)
-                });
-            }
-        });
-    });
+router.get('/streamWaterPollutionData', (req, res, next) => {
+  res.render('streamWaterPollutionData', {error: null, result:response.waterData})
 })
 //Route for GetHistoricalWaterPollutionData
 router.post('/getHistoricalWaterPollutionData', (req, res, next) => {
-  const {location, days} = req.body
-  //Server Streaming RPC GetHistoricalWaterPollutionData
-    const call = clientWater.GetHistoricalWaterPollutionData({location, days})
-    call.on('data', (response) => {
-        console.log("Record Data:  " + response.water_data)
-        res.status(200).send(response.water_data)
-    });
-    call.on('end', () => {
-        console.log("Server Connection Ended")
-        res.status(200).send("Server Connection Ended")
-    });
-    call.on('error', (error) => {
-        console.log("An Error Occurred. Mercury is in retrograde.", error)
-        res.status(500).send("An error occurred while getting historical air pollution data.")
-    })
+
 })
 //Route for ConfigureWaterSensorSettings
 router.post('/configureWaterSensorSettings', (req, res, next) => {
-  const {location} = req.body
-    //Unary RPC ConfigureWaterSensorSettings
-    clientWater.ConfigureWaterSensorSettings({ location }, (error, response) => {
-        if (error) {
-            console.error("Error: ", error)
-            res.status(500).send("An error occurred while configuring water sensor settings.")
-        } else {
-            try {
-                if (response.message) {
-                    console.log(response.message)
-                    res.status(200).send(response.message)
-                } else {
-                    console.log("Result: ", response.result, "Last Inspection Date: ", response.last_inspection)
-                    res.status(200).send(response)
-                }
-            } catch (error) {
-                console.log("Could not connect to server. Left keys at home.", error)
-                res.status(500).send("Could not connect to server.")
-            }
-        }
-    })
+
 })
 //Route for PublishWeatherData
 router.post('/publishWeatherData', (req, res, next) => {
@@ -199,46 +135,10 @@ router.post('/publishWeatherData', (req, res, next) => {
 })
 //Route for GetHistoricalWeatherData
 router.post('/getHistoricalWeatherData', (req, res, next) => {
-  const {location, days} = req.body
-  //Server Streaming RPC GetHistoricalWaterPollutionData
-    const call = clientWeather.GetHistoricalWeatherData({location, days})
-    call.on('data', (response) => {
-        console.log("Record Data:  " + response.weather_data)
-        res.status(200).send(response.weather_data)
-    });
-    call.on('end', () => {
-        console.log("Server Connection Ended")
-        res.status(200).send("Server Connection Ended")
-    });
-    call.on('error', (error) => {
-        console.log("An Error Occurred. Mercury is in retrograde.", error)
-        res.status(500).send("An error occurred while getting historical air pollution data.")
-    })
+
 })
 //Route for ConfigureStationSettings
 router.post('/configureStationSettings', (req, res, next) => {
-  var location = req.query.location
-  var pollutionLevel = req.query.pollutionLevel
-  var result
-
-  if(isNaN(location) && !isNaN(pollutionLevel)) {
-    try {
-      clientWeather.ConfigureStationSettings({ location: location, pollutionLevel: pollutionLevel }, function (error, response) {
-        try {
-          res.render('ConfigureStationSettings', { title: 'Pollution Level Recorder', error: error, result: response.result });
-        } catch (error) {
-          console.log(error)
-          res.render('ConfigureStationSettings', { title: 'Pollution Level Recorder', error: "Sensor Service is not available at the moment please try again later", result: null });
-        }
-      });
-
-    } catch (error) {
-      console.log(error)
-      res.render('ConfigureStationSettings', { title: 'Pollution Level Recorder', error: "Sensor Service is not available at the moment please try again later", result: null });
-    }
-  } else {
-    res.render('ConfigureStationSettings', { title: 'Pollution Level Recorder', error: null, result: result })
-  }
 
 })
 
