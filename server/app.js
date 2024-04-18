@@ -16,34 +16,22 @@ var randomSuccess = () => Math.random() >= 0.5
 
 //Bidirection Vars
 var sensorLocation = {}
-var pollutionMetrics = {}
-var highestPollution = 0
-var message = null
 
 //Air Pollution Functions
 function StreamAirPollutionData(call){
-  const timeout = setTimeout(() => {
-    call.cancel()
-  }, 5000)
   call.on('data', function(data){
-    clearTimeout(timeout)
     try{
-      const {location, pollutionLevel} = data
+      // const {location, pollutionLevel} = data
       if(!(data.location in sensorLocation)){
         sensorLocation[data.location] = {
           location: data.location,
           call: call
         }
       }
-      if(data.pollutionLevel > highestPollution || !message){
-        highestPollution = data.pollutionLevel
-        message = data.location + " recorded a pollution level of " + data.pollutionLevel + ". " + "Highest recorded pollution level is in " + data.location
-      }
-      for(var sensor in sensorLocation){
-        sensorLocation[sensor].call.write({
-          pollutionLevel: data.pollutionLevel,
+      for(var clientAir in sensorLocation){
+        sensorLocation[clientAir].call.write({
           location: data.location,
-          message: message
+          pollutionLevel: data.pollutionLevel
         })
       }
     } catch (error) {
@@ -55,11 +43,9 @@ function StreamAirPollutionData(call){
     }
   })
   call.on('end', function(){
-    clearTimeout(timeout)
     call.end()
   })
   call.on('error', function(error){
-    clearTimeout(timeout)
     console.error('Error in air pollution data stream:', error.message)
   })
 }
