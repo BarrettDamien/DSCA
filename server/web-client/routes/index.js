@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 const router = express.Router()
+var readlineSync = require("readline-sync")
+var readline = require("readline")
 const grpc = require('@grpc/grpc-js')
 const protoLoader = require('@grpc/proto-loader')
 const AIR_PROTO_PATH = __dirname + "/protos/air_pollution.proto"
@@ -20,7 +22,7 @@ const clientWeather = new weather_station_proto.WeatherStationService("0.0.0.0:4
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-
+  res.render('index', { title: 'Home'})
 });
 
 //Route for StreamAirPollutionData
@@ -80,21 +82,31 @@ router.post('/getHistoricalAirPollutionData', (req, res, next) => {
 router.post('/configureAirSensorSettings', (req, res, next) => {
   const {location} = req.body;
     //Unary RPC ConfigureAirSensorSettings
-    clientAir.ConfigureAirSensorSettings({ location }, (error, response) => {
-        if (error) {
-            console.error("Error: ", error)
-            res.status(500).send("An error occurred while configuring air sensor settings.")
-        } else {
-            try {
-                console.log("Result: " + response.result + " Last Inspection Date: " + response.last_inspection)
-                res.status(200).send(response)
-            } catch (error) {
-                console.log("Could not connect to server. Server gone fishing.", error)
-                res.status(500).send("Could not connect to server.")
-            }
-        }
+    try{
+    clientAir.ConfigureAirSensorSettings({location}, function(error, response) {
+      try{
+        res.render('configureAirSensorSettings', {title:'Configure Air Sensor', error:error, result:response.result})
+      } catch (error){
+        console.log(error)
+        res.render('configureAirSensorSettings', { title: 'Configure Air Sensor', error: "Configure Air Sensor is not available at the moment please try again later", result: null })
+      }
     })
-})
+  } catch (error){
+    console.log(error)
+    res.render('configureAirSensorSettings', { title: 'Configure Air Sensor', error: "Configure Air Sensor is not available at the moment please try again later", result: null })
+  }
+        // if (error) {
+        //     console.error("Error: ", error)
+        //     res.status(500).send("An error occurred while configuring air sensor settings.")
+        // } else {
+        //     try {
+        //         console.log("Result: " + response.result + " Last Inspection Date: " + response.last_inspection)
+        //         res.status(200).send(response)
+        //     } catch (error) {
+        //         console.log("Could not connect to server. Server gone fishing.", error)
+        //         res.status(500).send("Could not connect to server.")
+        //     }
+  })
 //Route for StreamWaterPollutionData
 router.post('/streamWaterPollutionData', (req, res, next) => {
   const {location, pollutionLevel} = req.body;
