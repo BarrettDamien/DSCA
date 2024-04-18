@@ -1,4 +1,5 @@
 const express = require('express')
+const app = express()
 const router = express.Router()
 const grpc = require('@grpc/grpc-js')
 const protoLoader = require('@grpc/proto-loader')
@@ -23,7 +24,7 @@ router.get('/', function(req, res, next) {
 });
 
 //Route for StreamAirPollutionData
-router.post('/streamAirPollutionData', (req, res) => {
+router.post('/streamAirPollutionData', (req, res, next) => {
   const {location, pollutionLevel} = req.body;
     // Bidirectional Streaming RPC StreamAirPollutionData
     const call = clientAir.StreamAirPollutionData()
@@ -58,7 +59,7 @@ router.post('/streamAirPollutionData', (req, res) => {
     })
 })
 //Route for GetHistoricalAirPollutionData
-router.post('/getHistoricalAirPollutionData', (req, res) => {
+router.post('/getHistoricalAirPollutionData', (req, res, next) => {
   const {location, days} = req.body
     //Server Streaming RPC GetHistoricalAirPollutionData
     const call = clientAir.GetHistoricalAirPollutionData({location, days})
@@ -76,7 +77,7 @@ router.post('/getHistoricalAirPollutionData', (req, res) => {
     });
 })
 //Route for ConfigureAirSensorSettings
-router.post('/configureAirSensorSettings', (req, res) => {
+router.post('/configureAirSensorSettings', (req, res, next) => {
   const {location} = req.body;
     //Unary RPC ConfigureAirSensorSettings
     clientAir.ConfigureAirSensorSettings({ location }, (error, response) => {
@@ -95,7 +96,7 @@ router.post('/configureAirSensorSettings', (req, res) => {
     })
 })
 //Route for StreamWaterPollutionData
-router.post('/streamWaterPollutionData', (req, res) => {
+router.post('/streamWaterPollutionData', (req, res, next) => {
   const {location, pollutionLevel} = req.body;
     //Bidirectional Streaming RPC StreamAirPollutionData
     const call = clientWater.streamWaterPollutionData();
@@ -115,7 +116,7 @@ router.post('/streamWaterPollutionData', (req, res) => {
         input: process.stdin,
         output: process.stdout
     });
-    rl.question("Where is this survey for? ", (location) => {
+    rl.question("Where is this survey for? ", (location, next) => {
         rl.question("What is the pollution level? (Type q to quit)", (pollution_level) => {
             if (pollution_level.toLowerCase() === "q") {
                 call.end();
@@ -130,7 +131,7 @@ router.post('/streamWaterPollutionData', (req, res) => {
     });
 })
 //Route for GetHistoricalWaterPollutionData
-router.post('/getHistoricalWaterPollutionData', (req, res) => {
+router.post('/getHistoricalWaterPollutionData', (req, res, next) => {
   const {location, days} = req.body
   //Server Streaming RPC GetHistoricalWaterPollutionData
     const call = clientWater.GetHistoricalWaterPollutionData({location, days})
@@ -148,7 +149,7 @@ router.post('/getHistoricalWaterPollutionData', (req, res) => {
     })
 })
 //Route for ConfigureWaterSensorSettings
-router.post('/configureWaterSensorSettings', (req, res) => {
+router.post('/configureWaterSensorSettings', (req, res, next) => {
   const {location} = req.body
     //Unary RPC ConfigureWaterSensorSettings
     clientWater.ConfigureWaterSensorSettings({ location }, (error, response) => {
@@ -172,7 +173,7 @@ router.post('/configureWaterSensorSettings', (req, res) => {
     })
 })
 //Route for PublishWeatherData
-router.post('/publishWeatherData', (req, res) => {
+router.post('/publishWeatherData', (req, res, next) => {
   const {temperature, humidity} = req.body
     //Client Streaming RPC PublishWeatherData
     const call = clientWeather.PublishWeatherData((error, response) => {
@@ -189,7 +190,7 @@ router.post('/publishWeatherData', (req, res) => {
     call.end();
 })
 //Route for GetHistoricalWeatherData
-router.post('/getHistoricalWeatherData', (req, res) => {
+router.post('/getHistoricalWeatherData', (req, res, next) => {
   const {location, days} = req.body
   //Server Streaming RPC GetHistoricalWaterPollutionData
     const call = clientWeather.GetHistoricalWeatherData({location, days})
@@ -207,7 +208,7 @@ router.post('/getHistoricalWeatherData', (req, res) => {
     })
 })
 //Route for ConfigureStationSettings
-router.get('/configureStationSettings', (req, res) => {
+router.post('/configureStationSettings', (req, res, next) => {
   var location = req.query.location
   var pollutionLevel = req.query.pollutionLevel
   var result
