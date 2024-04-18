@@ -50,7 +50,7 @@ switch (choice) {
               output: process.stdout
           })
           rl.on('line', function(pollutionLevel){
-            if(pollutionLevel.toLowerCase === "q"){
+            if(pollutionLevel.toLowerCase() === "q"){
               console.log("Pollution data recording ended.")
               call.end()
               rl.close()
@@ -131,7 +131,7 @@ switch (choice) {
               output: process.stdout
           })
           rl.on('line', function(pollutionLevel){
-            if(pollutionLevel.toLowerCase === "q"){
+            if(pollutionLevel.toLowerCase() === "q"){
               console.log("Pollution data recording ended.")
               call.end()
               rl.close()
