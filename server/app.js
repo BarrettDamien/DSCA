@@ -21,7 +21,6 @@ var sensorLocation = {}
 function StreamAirPollutionData(call){
   call.on('data', function(data){
     try{
-      // const {location, pollutionLevel} = data
       if(!(data.location in sensorLocation)){
         sensorLocation[data.location] = {
           location: data.location,
@@ -83,65 +82,37 @@ function ConfigureAirSensorSettings(call, callback) {
             message: 'An error occurred while configuring air sensor settings.'
         });
     }
-  //   if(randomSuccess()){
-  //     var result = "Sensor Online"
-  //     // var inspection_Date = new Date(today);
-  //     // inspection_Date.setDate(inspection_Date.getDate()-15)
-  //     callback(null, {result: result, last_inspection: last_inspection})
-  //       //inspection_Date.toISOString().slice(0,10)
-  //
-  //   } else if(!randomSuccess()){
-  //     var result = "Sensor Offline"
-  //     // var inspection_Date = new Date(today);
-  //     // inspection_Date.setDate(inspection_Date.getDate()-45)
-  //     callback(null, {result: result, last_inspection: last_inspection})
-  //   } else {
-  //     callback(null, {message: "Please enter a valid location"})
-  //   }
-  // }
 }
 
 //Water Pollution Functions
 function StreamWaterPollutionData(call){
-  const timeout = setTimeout(() => {
-    call.cancel()
-  }, 5000)
   call.on('data', function(data){
-    clearTimeout(timeout)
     try{
-      const {location, pollutionLevel} = data
       if(!(data.location in sensorLocation)){
         sensorLocation[data.location] = {
           location: data.location,
           call: call
         }
       }
-      if(data.pollutionLevel > highestPollution || !message){
-        highestPollution = data.pollutionLevel
-        message = "Highest recorded pollution level is in " + data.location
-      }
-      for(var sensor in sensorLocation){
-        sensorLocation[sensor].call.write({
-          pollutionLevel: data.pollutionLevel,
+      for(var clientWater in sensorLocation){
+        sensorLocation[clientWater].call.write({
           location: data.location,
-          message: message
+          pollutionLevel: data.pollutionLevel
         })
       }
     } catch (error) {
-      console.error('Error processing water pollution data:', error.message)
+      console.error('Error processing air pollution data:', error.message)
       call.emit('error', {
         code: grpc.status.UNKNOWN,
-        message: 'An error occurred while processing water pollution data.'
+        message: 'An error occurred while processing air pollution data.'
       })
     }
   })
   call.on('end', function(){
-    clearTimeout(timeout)
     call.end()
   })
   call.on('error', function(error){
-    clearTimeout(timeout)
-    console.error('Error in water pollution data stream:', error.message)
+    console.error('Error in air pollution data stream:', error.message)
   })
 }
 

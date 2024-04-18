@@ -16,6 +16,12 @@ const clientWater = new water_pollution_proto.WaterPollutionService("0.0.0.0:400
 const clientWeather = new weather_station_proto.WeatherStationService("0.0.0.0:40003", grpc.credentials.createInsecure())
 
 // Define routes for each service
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+
+});
+
 //Route for StreamAirPollutionData
 router.post('/streamAirPollutionData', (req, res) => {
   const {location, pollutionLevel} = req.body;
@@ -201,28 +207,30 @@ router.post('/getHistoricalWeatherData', (req, res) => {
     })
 })
 //Route for ConfigureStationSettings
-router.post('/configureStationSettings', (req, res) => {
-  const {location} = req.body;
-    //Unary RPC ConfigureStationSettings
-    clientWeather.ConfigureStationSettings({ location }, (error, response) => {
-        if (error) {
-            console.error("Error: ", error);
-            res.status(500).send("An error occurred while configuring weather station settings.")
-        } else {
-            try {
-                if (response.message) {
-                    console.log(response.message);
-                    res.status(200).send(response.message)
-                } else {
-                    console.log("Result: " + response.result + " Last Inspection Date: " + response.last_inspection)
-                    res.status(200).send(response)
-                }
-            } catch (error) {
-                console.log("Could not connect to server. Must be this tall to enter.", error)
-                res.status(500).send("Could not connect to server.")
-            }
+router.get('/configureStationSettings', (req, res) => {
+  var location = req.query.location
+  var pollutionLevel = req.query.pollutionLevel
+  var result
+
+  if(isNaN(location) && !isNaN(pollutionLevel)) {
+    try {
+      clientWeather.ConfigureStationSettings({ location: location, pollutionLevel: pollutionLevel }, function (error, response) {
+        try {
+          res.render('ConfigureStationSettings', { title: 'Pollution Level Recorder', error: error, result: response.result });
+        } catch (error) {
+          console.log(error)
+          res.render('ConfigureStationSettings', { title: 'Pollution Level Recorder', error: "Sensor Service is not available at the moment please try again later", result: null });
         }
-    });
+      });
+
+    } catch (error) {
+      console.log(error)
+      res.render('ConfigureStationSettings', { title: 'Pollution Level Recorder', error: "Sensor Service is not available at the moment please try again later", result: null });
+    }
+  } else {
+    res.render('ConfigureStationSettings', { title: 'Pollution Level Recorder', error: null, result: result })
+  }
+
 })
 
 module.exports = router;

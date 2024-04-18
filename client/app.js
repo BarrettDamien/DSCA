@@ -33,42 +33,6 @@ switch (choice) {
       switch (option1) {
         case 1:
           //Bidirectional Streaming RPC StreamAirPollutionData
-          // var location = readlineSync.question("Where is this survey for? ")
-          // var call = clientAir.StreamAirPollutionData()
-          //
-          // call.on('data', function(response){
-          //   console.log(response.location + " recorded a pollution level of " + response.pollutionLevel + ". ")
-          // })
-          // call.on('end', function(){
-          //   console.log('Server has ended the connection')
-          // })
-          // call.on('error', function(error){
-          //   console.log("An Error Occurred", error)
-          // })
-          // call.write({
-          //   message: location + " pollution data recording started.",
-          //   location: location
-          // })
-          // console.log("What is the pollution level? (Type q to quit) ")
-          // var rl = readline.createInterface({
-          //     input: process.stdin,
-          //     output: process.stdout
-          // })
-          // rl.on('line', function(pollutionLevel){
-          //   if(pollutionLevel.toLowerCase === "q"){
-          //     call.write({
-          //       pollutionLevel: location + " pollution data recording ended.",
-          //       location: location
-          //     })
-          //     call.end()
-          //     rl.close()
-          //   } else{
-          //     call.write({
-          //       pollutionLevel: parseFloat(pollutionLevel),
-          //       location: location
-          //     })
-          //   }
-          // })
           var call = clientAir.StreamAirPollutionData()
           call.on('data', function(response){
             console.log(response.location + " recorded a pollution level of " + response.pollutionLevel + ". ")
@@ -98,9 +62,6 @@ switch (choice) {
               })
             }
           })
-
-
-
           break;
 
         case 2:
@@ -155,28 +116,30 @@ switch (choice) {
           //Bidirectional Streaming RPC StreamWaterPollutionData
           var call = clientWater.StreamWaterPollutionData()
           call.on('data', function(response){
-            console.log(response.location + " recorded a pollution level of " + response.pollutionLevel + ". " + response.message)
+            console.log(response.location + " recorded a pollution level of " + response.pollutionLevel + ". ")
           })
           call.on('end', function(){
-
+            console.log('Server has ended the connection')
           })
           call.on('error', function(error){
             console.log("An Error Occurred", error)
           })
-          var location = readlineSync.question("Where is this survey for? ")
-          console.log("What is the pollution level? (Type q to quit)")
+          var sensor = readlineSync.question("Where is this survey for? ")
+          console.log("What is the pollution level? (Type q to quit) ")
           var rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
+              input: process.stdin,
+              output: process.stdout
           })
           rl.on('line', function(pollutionLevel){
             if(pollutionLevel.toLowerCase === "q"){
+              console.log("Pollution data recording ended.")
               call.end()
               rl.close()
             } else{
               call.write({
-                location: location,
+                location: sensor,
                 pollutionLevel: parseFloat(pollutionLevel)
+
               })
             }
           })

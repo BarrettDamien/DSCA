@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <!-- Add your CSS stylesheet link here -->
-    <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
-<body>
-    <h1><%= title %></h1>
+<html>
+  <head>
+    <title>Distributed Systems CA Project Home Page</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Distributed Systems CA Project Home Page</h1>
 
     <!-- Navigation links -->
     <a href="/streamAirPollutionData">Stream Air Pollution Data</a>
@@ -25,6 +22,6 @@
     <% if(error) { %>
       <p><%= error %></p>
     <% } %>
-
-</body>
+    <p>Pick the appropriate option above</p>
+  </body>
 </html>
