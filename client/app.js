@@ -35,7 +35,7 @@ switch (choice) {
           //Bidirectional Streaming RPC StreamAirPollutionData
           var call = clientAir.StreamAirPollutionData()
           call.on('data', function(response){
-            console.log(response.location + " recorded a pollution level of " + response.pollutionLevel + ". " + response.message)
+            console.log(response.message)
           })
           call.on('end', function(){
 

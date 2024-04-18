@@ -29,24 +29,20 @@ function StreamAirPollutionData(call){
     clearTimeout(timeout)
     try{
       const {location, pollutionLevel} = data
-      if(!(pollutionLevel.location in sensorLocation)){
-        sensorLocation[pollutionLevel.location] = {
-          location: pollutionLevel.location,
+      if(!(data.location in sensorLocation)){
+        sensorLocation[data.location] = {
+          location: data.location,
           call: call
         }
       }
-      if(!(pollutionLevel.location in sensorLocation)){
-        sensorLocation[pollutionLevel.location] = 0
-      }
-      sensorLocation[pollutionLevel.location] += 1
-      if(pollutionLevel.pollutionLevel > highestPollution || !message){
-        highestPollution = pollutionLevel.pollutionLevel
-        message = "Highest recorded pollution level is in " + pollutionLevel.location
+      if(data.pollutionLevel > highestPollution || !message){
+        highestPollution = data.pollutionLevel
+        message = data.location + " recorded a pollution level of " + data.pollutionLevel + ". " + "Highest recorded pollution level is in " + data.location
       }
       for(var sensor in sensorLocation){
         sensorLocation[sensor].call.write({
-          pollutionLevel: pollutionLevel.pollutionLevel,
-          location: pollutionLevel.location,
+          pollutionLevel: data.pollutionLevel,
+          location: data.location,
           message: message
         })
       }
@@ -128,24 +124,20 @@ function StreamWaterPollutionData(call){
     clearTimeout(timeout)
     try{
       const {location, pollutionLevel} = data
-      if(!(pollutionLevel.location in sensorLocation)){
-        sensorLocation[pollutionLevel.location] = {
-          location: pollutionLevel.location,
+      if(!(data.location in sensorLocation)){
+        sensorLocation[data.location] = {
+          location: data.location,
           call: call
         }
       }
-      if(!(pollutionLevel.location in sensorLocation)){
-        sensorLocation[pollutionLevel.location] = 0
-      }
-      sensorLocation[pollutionLevel.location] += 1
-      if(pollutionLevel.pollutionLevel > highestPollution || !message){
-        highestPollution = pollutionLevel.pollutionLevel
-        message = "Highest recorded pollution level is in " + pollutionLevel.location
+      if(data.pollutionLevel > highestPollution || !message){
+        highestPollution = data.pollutionLevel
+        message = "Highest recorded pollution level is in " + data.location
       }
       for(var sensor in sensorLocation){
         sensorLocation[sensor].call.write({
-          pollutionLevel: pollutionLevel.pollutionLevel,
-          location: pollutionLevel.location,
+          pollutionLevel: data.pollutionLevel,
+          location: data.location,
           message: message
         })
       }
