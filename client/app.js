@@ -215,10 +215,11 @@ switch (choice) {
               temperatureInput = readlineSync.question("Enter temperature: ")
               humidityInput = readlineSync.question("Enter humidity: ")
               userInput = readlineSync.question("End entries? Y/N ")
+
+              call.write({ temperature: parseFloat(temperatureInput), humidity: parseFloat(humidityInput)})
               if(userInput.toLowerCase() === "y"){
                 break
               }
-              call.write({ temperature: parseFloat(temperatureInput), humidity: parseFloat(humidityInput)})
             }
             call.end()
             break;
